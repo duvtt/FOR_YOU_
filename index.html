@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FOR YOU🫵🏻</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #fce4ec, #ce93d8);
+      color: #2c003e;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(44, 0, 62, 0.85);
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #f8bbd0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 20px;
+      user-select: none;
+    }
+    .overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3.5em;
+      margin: 30px 0 10px;
+      color: #7b1fa2;
+      text-shadow: 2px 2px 10px rgba(123, 31, 162, 0.4);
+      animation: bounceIn 1s ease forwards;
+      transform-origin: center bottom;
+    }
+    h2 {
+      font-size: 1.8em;
+      margin: 20px 0 40px;
+      color: #4a148c;
+      animation: fadeInUp 1.2s ease forwards;
+    }
+    .ucapan {
+      background: #f3e5f5;
+      border-radius: 20px;
+      padding: 30px 35px;
+      box-shadow: 0 12px 30px rgba(123, 31, 162, 0.25);
+      margin-bottom: 50px;
+      line-height: 1.8;
+      font-size: 1.2em;
+      color: #4a148c;
+      animation: fadeSlideIn 1.5s ease forwards;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      white-space: pre-line;
+      position: relative;
+    }
+    /* Hilangkan animasi cursor berkedip, border kanan transparan */
+    #typing-text {
+      display: inline-block;
+      border-right: none;
+    }
+
+    /* Galeri */
+    .galeri,
+    .galeri-bawah {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+      padding: 0 10px;
+    }
+    .card {
+      background: #ede7f6;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(123, 31, 162, 0.15);
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+      border-bottom: 3px solid #7b1fa2;
+    }
+    .card p {
+      padding: 15px 12px;
+      font-size: 1em;
+      color: #4a148c;
+      font-weight: 600;
+      background: #ede7f6;
+      margin: 0;
+      user-select: none;
+    }
+    .card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(123, 31, 162, 0.4);
+    }
+    .card:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(44, 0, 62, 0.95);
+      justify-content: center;
+      align-items: center;
+      animation: fadeInModal 0.4s ease forwards;
+    }
+    .modal img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+      animation: zoomIn 0.4s ease forwards;
+      user-select: none;
+    }
+    .modal .close {
+      position: absolute;
+      top: 25px;
+      right: 35px;
+      font-size: 48px;
+      font-weight: 700;
+      color: #f48fb1;
+      cursor: pointer;
+      transition: color 0.3s ease, transform 0.3s ease;
+      user-select: none;
+    }
+    .modal .close:hover {
+      color: #f50057;
+      transform: rotate(20deg) scale(1.2);
+    }
+
+    footer {
+      margin: 60px 0 40px;
+      font-style: italic;
+      color: #4a148c;
+      font-weight: 600;
+      font-size: 1.1em;
+      user-select: none;
+    }
+
+    /* Animasi */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    @keyframes bounceIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(100%);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05) translateY(-10%);
+      }
+      70% {
+        transform: scale(0.9) translateY(5%);
+      }
+      100% {
+        transform: scale(1) translateY(0);
+      }
+    }
+    @keyframes fadeSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    @keyframes fadeInModal {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Responsif */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.8em;
+      }
+      h2 {
+        font-size: 1.4em;
+      }
+      .ucapan {
+        font-size: 1.05em;
+        padding: 25px 30px;
+      }
+    }
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.2em;
+      }
+      h2 {
+        font-size: 1.1em;
+      }
+      .ucapan {
+        font-size: 1em;
+        padding: 20px 20px;
+      }
+      .card img {
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="overlay">
+    TAP <br>
+    BISA KLIK FOTO
+  </div>
+  <div class="container">
+    <h1>HAPPY BIRTHDAY TO YOU</h1>
+    <h2>ANAK AGUNG NOVARINI MILLA SANTHY</h2>
+
+    <section class="ucapan">
+      <p id="typing-text"></p>
+    </section>
+
+    <h2>HIGHLIGHT 📸</h2>
+    <section class="galeri">
+      <div class="card">
+        <img src="aib/hg 1.jpg" alt="Momen Bersama 1" />
+        <p>HIGHLIGHT</p>
+      </div>
+      <div class="card">
+        <img src="aib/hg 2.jpg" alt="Momen Bersama 2" />
+        <p>BOS BESAR</p>
+      </div>
+      <div class="card">
+        <img src="aib/hg 3.jpg" alt="Momen Bersama 3" />
+        <p>HIGHLIGHT</p>
+      </div>
+      <div class="card">
+        <img src="aib/hg 4.jpg" alt="Momen Bersama 4" />
+        <p>JANGAN LUPA CEKREK</p>
+      </div>
+    </section>
+
+    <h2>GALERI</h2>
+    <section class="galeri-bawah">
+      <div class="card">
+        <img src="aib/2.jpg" alt="Momen Bersama 5" />
+        <p>SILAU BANG</p>
+      </div>
+      <div class="card">
+        <img src="aib/6.jpg" alt="Momen Bersama 6" />
+        <p>IHHH TAKOKK NYEEE</p>
+      </div>
+      <div class="card">
+        <img src="aib/5.jpg" alt="Momen Bersama 7" />
+        <p>SIAP KETUA</p>
+      </div>
+      <div class="card">
+        <img src="aib/4.jpg" alt="Momen Bersama 8" />
+        <p>✌</p>
+      </div>
+      <div class="card">
+        <img src="aib/11.jpg" alt="Momen Bersama 9" />
+        <p>NI JADI PP KEREN</p>
+      </div>
+      <div class="card">
+        <img src="aib/1.jpg" alt="Momen Bersama 9" />
+        <p>NI JADI PP KEREN</p>
+      </div>
+      <div class="card">
+        <img src="aib/3.jpg" alt="Momen Bersama 9" />
+        <p>NI JADI PP KEREN</p>
+      </div>
+      <div class="card">
+        <img src="aib/7.jpg" alt="Momen Bersama 9" />
+        <p>NI JADI PP KEREN</p>
+      </div>
+    </section>
+
+<!-- pembagi coppy -->
+
+     <section class="galeri-bawah">
+      <div class="card">
+        <img src="aib/8.jpg" alt="Momen Bersama 5" />
+        <p>NAPA KAU?</p>
+      </div>
+      <div class="card">
+        <img src="aib/9.jpg" alt="Momen Bersama 6" />
+        <p>DAH AH MALES</p>
+      </div>
+      <div class="card">
+        <img src="aib/10.jpg" alt="Momen Bersama 7" />
+        <p>P ADU JEBIR</p>
+      </div>
+      <div class="card">
+        <img src="aib/12.jpg" alt="Momen Bersama 8" />
+        <p>PART 2</p>
+      </div>
+      <div class="card">
+        <img src="aib/13.jpg" alt="Momen Bersama 9" />
+        <p>PART 3</p>
+      </div>
+      <div class="card">
+        <img src="aib/14.jpg" alt="Momen Bersama 9" />
+        <p>PART 4</p>
+      </div>
+      <div class="card">
+        <img src="aib/15.jpg" alt="Momen Bersama 9" />
+        <p>SEMIR BARU</p>
+      </div>
+      <div class="card">
+        <img src="aib/16.jpg" alt="Momen Bersama 9" />
+        <p>🫦</p>
+      </div>
+    </section>
+
+    
+
+    <!-- PEMBAGI BAGAIN 3 -->
+    <section class="galeri-bawah">
+      <div class="card">
+        <img src="aib/17.jpg" alt="Momen Bersama 5" />
+        <p>SAKIT GIGI KAH LU?</p>
+      </div>
+      <div class="card">
+        <img src="aib/18.jpg" alt="Momen Bersama 6" />
+        <p>UB PAS NE?</p>
+      </div>
+      <div class="card">
+        <img src="aib/19.jpg" alt="Momen Bersama 7" />
+        <p>MENGHILANG ✌</p>
+      </div>
+      <div class="card">
+        <img src="aib/20.jpg" alt="Momen Bersama 8" />
+        <p>SHINE LIKE A DIAMOND</p>
+      </div>
+      <div class="card">
+        <img src="aib/21.jpg" alt="Momen Bersama 9" />
+        <p>KISSS</p>
+      </div>
+      <div class="card">
+        <img src="aib/22.jpg" alt="Momen Bersama 9" />
+        <p>"IH KAGET" DENGAN NADA JOKOWI</p>
+      </div>
+      <div class="card">
+        <img src="aib/23.jpg" alt="Momen Bersama 9" />
+        <p>SENYUM PEPERANGAN</p>
+      </div>
+      <div class="card">
+        <img src="aib/24.jpg" alt="Momen Bersama 9" />
+        <p>KIAP LU?</p>
+      </div>
+    </section>
+
+    
+<!-- PEMBAGIAN 4 -->
+    <section class="galeri-bawah">
+      <div class="card">
+        <img src="aib/25.jpg" alt="Momen Bersama 5" />
+        <p>UB MIRIP AJAK NYAMA DELOD NE</p>
+      </div>
+      <div class="card">
+        <img src="aib/27.jpg" alt="Momen Bersama 6" />
+        <p>KASIK CEKREK DULU</p>
+      </div>
+      <div class="card">
+        <img src="aib/34.jpg" alt="Momen Bersama 7" />
+        <p>TUMBEN KENYEM MANIS</p>
+      </div>
+      <div class="card">
+        <img src="aib/29.jpg" alt="Momen Bersama 8" />
+        <p>ODGJ</p>
+      </div>
+      <div class="card">
+        <img src="aib/30.jpg" alt="Momen Bersama 9" />
+        <p>POSE</p>
+      </div>
+      <div class="card">
+        <img src="aib/31.jpg" alt="Momen Bersama 9" />
+        <p>VVIBU</p>
+      </div>
+      <div class="card">
+        <img src="aib/32.jpg" alt="Momen Bersama 9" />
+        <p>ANTE GEN WIII 🤙</p>
+      </div>
+      <div class="card">
+        <img src="aib/33.jpg" alt="Momen Bersama 9" />
+        <p>SEBERAPA MEWEING</p>
+      </div>
+    </section>
+
+
+<!-- PEMBAGIAN 5 -->
+ <section class="galeri-bawah">
+      <div class="card">
+        <img src="aib/42.jpg" alt="Momen Bersama 5" />
+        <p>GOOD</p>
+      </div>
+      <div class="card">
+        <img src="aib/35.jpg" alt="Momen Bersama 6" />
+        <p>KEREN KALI CIH</p>
+      </div>
+      <div class="card">
+        <img src="aib/36.jpg" alt="Momen Bersama 7" />
+        <p>PAKKK UUUU</p>
+      </div>
+      <div class="card">
+        <img src="aib/26.jpg" alt="Momen Bersama 8" />
+        <p>ABON NE?</p>
+      </div>
+      <div class="card">
+        <img src="aib/38.JPG" alt="Momen Bersama 9" />
+        <p>BUBUKKK</p>
+      </div>
+      <div class="card">
+        <img src="aib/39.JPG" alt="Momen Bersama 9" />
+        <p>NGAJAK DUEL?</p>
+      </div>
+      <div class="card">
+        <img src="aib/40.jpg" alt="Momen Bersama 9" />
+        <p>SENYUM KIAMAT</p>
+      </div>
+      <div class="card">
+        <img src="aib/41.JPG" alt="Momen Bersama 9" />
+        <p>APA TU MANN</p>
+      </div>
+    </section>
+
+
+<!-- BERSAMA -->
+<br>
+<h2>BEST MOMENTS TOGETHER</h2>
+<section class="galeri-bawah">
+      <div class="card">
+        <img src="aib/BERSAMA 1.jpg" alt="Momen Bersama 5" />
+        <p>KALI KE 2 KANTI KE PETENG</p>
+      </div>
+      <div class="card">
+        <img src="aib/BERSAMA 2.jpg" alt="Momen Bersama 6" />
+        <p>SEBELUM MAAN RUJAK</p>
+      </div>
+      <div class="card">
+        <img src="aib/BERSAMA 3.jpg" alt="Momen Bersama 7" />
+        <p>NUGAS CUMAN AJAK 3</p>
+      </div>
+      <div class="card">
+        <img src="aib/BERSAMA 4.jpg" alt="Momen Bersama 8" />
+        <p>GO TO THE VIRGIN</p>
+      </div>
+      <div class="card">
+        <img src="aib/BERSAMA 5.jpg" alt="Momen Bersama 9" />
+        <p>RUTINITAS PERTEMUAN</p>
+      </div>
+      <div class="card">
+        <img src="aib/BERSAMA 6.jpg" alt="Momen Bersama 9" />
+        <p>BEST PART</p>
+      </div>
+      <div class="card">
+        <img src="aib/BERSAMA 7.jpg" alt="Momen Bersama 9" />
+        <p>NGANTOSAN MAKANAN</p>
+      </div>
+      <div class="card">
+        <img src="aib/bersama dies.jpg" alt="Momen Bersama 9" />
+        <p>DIES?</p>
+      </div>
+    </section>
+
+
+
+    <footer>
+      Dari seseorang yang akan pergi satu hari nanti dan memanfaatkan waktu yang tersisa bersama dengan maksiaml
+    </footer>
+  </div>
+
+  <!-- Modal Fullscreen -->
+  <div id="myModal" class="modal" aria-hidden="true" role="dialog" aria-label="Gambar fullscreen">
+    <span class="close" role="button" aria-label="Tutup">&times;</span>
+    <img id="modal-img" src="" alt="fullscreen" />
+  </div>
+
+  <!-- Back sound -->
+  <audio id="musik" loopautoplay>
+    <source src="Hindia - Apapun Yang Terjadi (Official Music Video).mp3" type="audio/mpeg" />
+    Browsermu tidak mendukung audio.
+  </audio>
+
+  <script>
+    const text = `ROHAYEEE GEKKKK 🥳🎉
+    di hari raya galungan ini ada orang yang sedang mengalami dimana di usia yang hampir menginjak kepala orang, yang udah males debat, dan YTTA. semoga di umur yang tua ini badan tidak makin tambah rapuh kayak ibuk ibuk anak 3 dan sakit head, semoga diberikan kehidupan yang lebih baiklagi kedepannya walupun tau di depan bakalan ad banyak tantangan yang akan menabrak dan semoga masih bisa bertahan serta bisa melewatinya dengan baik, dan apa yang di harapkan bisa terwujud walupun itu tidak mudaH, pebedikan MEMELUD. yang terpenting GASSS NUMMM🍻🍻🍻`;
+
+    let index = 0;
+    const speed = 45;
+    const typingText = document.getElementById("typing-text");
+
+    function typeWriter() {
+      if (index < text.length) {
+        typingText.textContent += text.charAt(index);
+        index++;
+        setTimeout(typeWriter, speed);
+      }
+    }
+
+    window.addEventListener("load", function () {
+      const overlay = document.getElementById("overlay");
+      const audio = document.getElementById("musik");
+
+      // Play musik setelah klik overlay
+      overlay.addEventListener("click", function () {
+        this.classList.remove("show");
+        audio.play().catch(() => console.log("Autoplay ditolak, menunggu interaksi user"));
+        typeWriter();
+      });
+
+      // Tampilkan overlay saat load
+      overlay.classList.add("show");
+    });
+
+    // Modal untuk fullscreen
+    const modal = document.getElementById("myModal");
+    const modalImg = document.getElementById("modal-img");
+    const closeBtn = document.querySelector(".modal .close");
+
+    document.querySelectorAll(".card img").forEach((img) => {
+      img.addEventListener("click", function () {
+        modal.style.display = "flex";
+        modal.setAttribute("aria-hidden", "false");
+        modalImg.src = this.src;
+        modalImg.alt = this.alt;
+        document.body.style.overflow = "hidden"; // disable scroll saat modal aktif
+      });
+    });
+
+    closeBtn.onclick = function () {
+      modal.style.display = "none";
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = ""; // enable scroll kembali
+    };
+    modal.onclick = function (e) {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+    };
+  </script>
+</body>
+</html>
